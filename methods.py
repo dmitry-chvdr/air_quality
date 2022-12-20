@@ -56,6 +56,67 @@ def process_data(main_path, dir):
     ).reset_index(), count_not_valid_rows(raw_df)
 
 
+def make_processed_dataframes(main_path, dirs, print_result=True):
+    processed_dfs = {}
+    for dir in dirs:
+        df, validated_info = process_data(main_path, dir)
+        processed_dfs[dir] = df
+        if print_result:
+            print(f"{dir} - {validated_info}")
+    return processed_dfs
+
+
+def get_result_data(*args, **kwargs):
+    processed_dfs = make_processed_dataframes(*args, **kwargs)
+    # Соберём в один df и удалим дублирующие строки
+    marked_by_pollutant_data = []
+    for pollutant, pollutant_df in processed_dfs.items():
+        marked_by_pollutant_data.append(pollutant_df)
+
+    marked_df = pd.concat(marked_by_pollutant_data, axis=1)
+    marked_df["Date"] = marked_df.iloc[:, 0]
+
+    duplicate_cols = marked_df.columns[marked_df.columns.duplicated()]
+    marked_df.drop(columns=duplicate_cols, inplace=True)
+
+    # Найдём индекс по каждому загрязнителю
+    marked_df["SO2_index"] = marked_df["SO2_Concentration"].apply(
+        lambda x: get_so2_index(x)
+    )
+    marked_df["PM10_index"] = marked_df["PM10_Concentration"].apply(
+        lambda x: get_10pm_index(x)
+    )
+    marked_df["PM2.5_index"] = marked_df["PM2.5_Concentration"].apply(
+        lambda x: get_25pm_index(x)
+    )
+    marked_df["O3_index"] = marked_df["O3_Concentration"].apply(
+        lambda x: get_o3_index(x)
+    )
+    marked_df["NO2_index"] = marked_df["NO2_Concentration"].apply(
+        lambda x: get_no2_index(x)
+    )
+    marked_df["CO_index"] = marked_df["CO_Concentration"].apply(
+        lambda x: get_co_index(x)
+    )
+
+    # Найдём общий индекс воздуха
+    marked_df["aqi_index"] = (
+        marked_df[
+            [
+                "SO2_index",
+                "PM10_index",
+                "PM2.5_index",
+                "O3_index",
+                "NO2_index",
+                "CO_index",
+            ]
+        ]
+        .max(axis=1)
+        .astype(int)
+    )
+    return marked_df
+
+
 def get_so2_index(x):
     # SO2 index calculation
     x = x / 2.62  # 1 ppb = 2.62 µg/m3
