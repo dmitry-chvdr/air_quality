@@ -100,7 +100,7 @@ def get_result_data(*args, **kwargs):
     )
 
     # Найдём общий индекс воздуха
-    marked_df["aqi_index"] = (
+    marked_df["aqi"] = (
         marked_df[
             [
                 "SO2_index",
