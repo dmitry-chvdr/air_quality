@@ -1,8 +1,9 @@
-import pandas as pd
-import scipy as sc
-import numpy as np
 import glob
 import os
+
+import numpy as np
+import pandas as pd
+import scipy as sc
 
 
 def concat_files_to_df(path):
