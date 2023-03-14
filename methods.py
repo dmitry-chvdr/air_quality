@@ -29,6 +29,7 @@ def count_not_valid_rows(dataframe):
 
 
 def process_data(main_path, dir):
+    # Обработка сырых данных из файлов
     path = main_path + dir
 
     raw_df = concat_files_to_df(path)
