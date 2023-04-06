@@ -118,6 +118,22 @@ def get_result_data(*args, **kwargs):
     return marked_df
 
 
+def load_data_with_sub_index(path: str):
+    csv_data = pd.read_csv(path)
+    data = csv_data.set_index("Date").sort_index()
+    data = data[
+        [
+            "CO_Concentration",
+            "NO2_Concentration",
+            "O3_Concentration",
+            "PM10_Concentration",
+            "PM2.5_Concentration",
+            "SO2_Concentration",
+        ]
+    ]
+    return data.dropna()
+
+
 def get_so2_index(x):
     # SO2 index calculation
     x = x / 2.62  # 1 ppb = 2.62 µg/m3
