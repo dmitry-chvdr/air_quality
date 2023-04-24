@@ -23,7 +23,6 @@ class BaseModel(ABC):
 
 class LogRegModel(BaseModel):
     def __init__(self, model_path: str, data_path: str):
-        self.model_path = model_path
         self.model = self.load_model(model_path)
         self.data = self.load_dataset(data_path)
 
