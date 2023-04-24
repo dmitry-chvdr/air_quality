@@ -1,13 +1,18 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 
 from models import LogRegModel
 
-MODEL_PATH = "./models/LOGREG.pkl"
-DATA_PATH = "https://raw.githubusercontent.com/dmitry-chvdr/aqi_prediction/master/ts_air_quality_index_2013_2020.csv"
+load_dotenv()
+
+LOGREG_MODEL_PATH = os.getenv("LOGREG_MODEL_PATH")
+DATA_PATH = os.getenv("DATA_PATH")
 
 app = FastAPI()
 
-model = LogRegModel(MODEL_PATH, DATA_PATH)
+model = LogRegModel(LOGREG_MODEL_PATH, DATA_PATH)
 
 
 @app.get("/predict")
