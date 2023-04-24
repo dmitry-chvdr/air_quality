@@ -1,7 +1,10 @@
-numpy
-pandas
-scipy
-scikit-learn
-fastapi
-uvicorn
-httpx
+numpy==1.21.4
+pandas==1.5.0
+scipy==1.9.2
+scikit-learn==1.1.2
+fastapi==0.88.0
+uvicorn==0.21.1
+httpx==0.23.3
+python-dotenv
+black==23.3.0
+isort==5.3.0
