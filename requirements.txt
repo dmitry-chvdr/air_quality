@@ -1,4 +1,4 @@
-numpy==1.21.4
+numpy==1.22.0
 pandas==1.5.0
 scipy==1.9.2
 scikit-learn==1.1.2
@@ -6,5 +6,9 @@ fastapi==0.88.0
 uvicorn==0.21.1
 httpx==0.23.3
 python-dotenv
-black==23.3.0
+black==22.8.0
 isort==5.3.0
+requests==2.25.0
+prometheus-fastapi-instrumentator
+psutil==5.9.2
+pytest==6.2.4
